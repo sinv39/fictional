@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.cug.fictional.mapper.CoverConfigMapper">
+
+    <resultMap id="BaseResultMap" type="cn.edu.cug.fictional.entity.CoverConfig">
+        <id column="id" property="id"/>
+        <result column="cover_type" property="coverType"/>
+        <result column="cover_path" property="coverPath"/>
+        <result column="introduction" property="introduction"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="updater_id" property="updaterId"/>
+    </resultMap>
+
+    <select id="selectByType" resultMap="BaseResultMap">
+        SELECT * FROM tb_cover_config WHERE cover_type = #{coverType}
+    </select>
+
+    <update id="updateCoverPath">
+        UPDATE tb_cover_config 
+        SET cover_path = #{coverPath}, 
+            updater_id = #{updaterId},
+            update_time = NOW()
+        WHERE cover_type = #{coverType}
+    </update>
+
+    <update id="updateIntroduction">
+        UPDATE tb_cover_config 
+        SET introduction = #{introduction}, 
+            updater_id = #{updaterId},
+            update_time = NOW()
+        WHERE cover_type = #{coverType}
+    </update>
+
+</mapper>
+

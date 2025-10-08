@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  # 后端服务
+  fictional-backend:
+    build:
+      context: ../backend
+      dockerfile: ../deploy/Dockerfile
+    image: fictional-backend:1.2.0
+    container_name: fictional-backend
+    ports:
+      - "10104:10104"
+    environment:
+      # Spring配置
+      - SPRING_PROFILES_ACTIVE=prod
+      # 数据库配置（使用外部MySQL）
+      - SPRING_DATASOURCE_URL=jdbc:mysql://123.60.40.72:10101/fiction?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=aGF0c3VuZSBtaWt1
+      # MinIO配置（使用外部MinIO）
+      - MINIO_ENDPOINT=http://123.60.40.72:10102
+      - MINIO_ACCESS_KEY=miku
+      - MINIO_SECRET_KEY=aGF0c3VuZSBtaWt1
+      # JVM参数
+      - JAVA_OPTS=-Xms512m -Xmx1024m -Dfile.encoding=UTF-8
+    restart: unless-stopped
+    networks:
+      - fictional-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:10104/api/cover/home"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # 前端服务
+  fictional-frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile.simple
+    image: fictional-frontend:1.2.0
+    container_name: fictional-frontend
+    ports:
+      - "10100:80"  # 前端端口10100
+    depends_on:
+      - fictional-backend
+    restart: unless-stopped
+    networks:
+      - fictional-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  fictional-network:
+    driver: bridge
+

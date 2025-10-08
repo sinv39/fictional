@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.cug.fictional.mapper.VideoMapper">
+
+    <resultMap id="BaseResultMap" type="cn.edu.cug.fictional.entity.Video">
+        <id column="id" property="id"/>
+        <result column="video_name" property="videoName"/>
+        <result column="video_path" property="videoPath"/>
+        <result column="file_size" property="fileSize"/>
+        <result column="duration" property="duration"/>
+        <result column="uploader_id" property="uploaderId"/>
+        <result column="uploader_name" property="uploaderName"/>
+        <result column="upload_time" property="uploadTime"/>
+        <result column="status" property="status"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="cn.edu.cug.fictional.entity.Video"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO tb_video (
+            video_name, video_path, file_size, duration, 
+            uploader_id, uploader_name, status
+        ) VALUES (
+            #{videoName}, #{videoPath}, #{fileSize}, #{duration}, 
+            #{uploaderId}, #{uploaderName}, #{status}
+        )
+    </insert>
+
+    <select id="selectWithPage" resultMap="BaseResultMap">
+        SELECT * FROM tb_video 
+        WHERE status = 1 
+        ORDER BY upload_time DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM tb_video WHERE status = 1
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT * FROM tb_video WHERE id = #{id}
+    </select>
+
+</mapper>
+

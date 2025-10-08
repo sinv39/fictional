@@ -1,0 +1,68 @@
+spring:
+  application:
+    name: fictional
+  profiles:
+    active: dev
+  
+  # 数据源配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://123.60.40.72:10101/fiction?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: aGF0c3VuZSBtaWt1
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      connection-init-sql: "SET NAMES utf8mb4"
+  
+  # 文件上传配置
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100GB
+      max-request-size: 100GB
+  
+  # Jackson配置
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    default-property-inclusion: non_null
+
+# MyBatis配置
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: cn.edu.cug.cs.gtl.fictional.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# MinIO配置
+minio:
+  endpoint: http://123.60.40.72:10102
+  access-key: miku
+  secret-key: aGF0c3VuZSBtaWt1
+  video-bucket: video-bucket
+  photo-bucket: photo-bucket
+
+# JWT配置
+jwt:
+  secret: fictional-cug-scifi-jwt-secret-key-2024-very-long-and-secure-key
+  expiration: 604800000  # 7天（毫秒）
+
+# 服务器配置
+server:
+  port: 10104
+  servlet:
+    context-path: /
+
+# 日志配置
+logging:
+  level:
+    cn.edu.cug.cs.gtl.fictional: DEBUG
+    org.springframework.security: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+

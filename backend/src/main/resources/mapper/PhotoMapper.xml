@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.cug.fictional.mapper.PhotoMapper">
+
+    <resultMap id="BaseResultMap" type="cn.edu.cug.fictional.entity.Photo">
+        <id column="id" property="id"/>
+        <result column="photo_name" property="photoName"/>
+        <result column="photo_path" property="photoPath"/>
+        <result column="file_size" property="fileSize"/>
+        <result column="width" property="width"/>
+        <result column="height" property="height"/>
+        <result column="uploader_id" property="uploaderId"/>
+        <result column="uploader_name" property="uploaderName"/>
+        <result column="upload_time" property="uploadTime"/>
+        <result column="status" property="status"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="cn.edu.cug.fictional.entity.Photo"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO tb_photo (
+            photo_name, photo_path, file_size, width, height, 
+            uploader_id, uploader_name, status
+        ) VALUES (
+            #{photoName}, #{photoPath}, #{fileSize}, #{width}, #{height}, 
+            #{uploaderId}, #{uploaderName}, #{status}
+        )
+    </insert>
+
+    <select id="selectWithPage" resultMap="BaseResultMap">
+        SELECT * FROM tb_photo 
+        WHERE status = 1 
+        ORDER BY upload_time DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM tb_photo WHERE status = 1
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT * FROM tb_photo WHERE id = #{id}
+    </select>
+
+</mapper>
+

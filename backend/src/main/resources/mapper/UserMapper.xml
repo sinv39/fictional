@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.cug.fictional.mapper.UserMapper">
+
+    <resultMap id="BaseResultMap" type="cn.edu.cug.fictional.entity.User">
+        <id column="id" property="id"/>
+        <result column="student_id" property="studentId"/>
+        <result column="password" property="password"/>
+        <result column="real_name" property="realName"/>
+        <result column="college" property="college"/>
+        <result column="dormitory" property="dormitory"/>
+        <result column="phone" property="phone"/>
+        <result column="qq" property="qq"/>
+        <result column="introduction" property="introduction"/>
+        <result column="role" property="role"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <select id="selectByStudentId" resultMap="BaseResultMap">
+        SELECT * FROM tb_user 
+        WHERE student_id = #{studentId} AND status = 1
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT * FROM tb_user 
+        WHERE id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="cn.edu.cug.fictional.entity.User"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO tb_user (
+            student_id, password, real_name, college, dormitory, 
+            phone, qq, introduction, role, status
+        ) VALUES (
+            #{studentId}, #{password}, #{realName}, #{college}, #{dormitory}, 
+            #{phone}, #{qq}, #{introduction}, #{role}, #{status}
+        )
+    </insert>
+
+</mapper>
+
