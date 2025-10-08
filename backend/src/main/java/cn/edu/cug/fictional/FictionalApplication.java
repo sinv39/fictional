@@ -12,7 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @since 2024
  */
 @SpringBootApplication
-@MapperScan("cn.edu.cug.cs.gtl.fictional.mapper")
+@MapperScan("cn.edu.cug.fictional.mapper")
 public class FictionalApplication {
 
     public static void main(String[] args) {
